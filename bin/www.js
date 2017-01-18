@@ -3,7 +3,6 @@
 /**
  * Module dependencies.
  */
-
 var http = require('http');
 var app = require('../app');
 var debug = require('debug')('express-raw:server');
@@ -11,7 +10,6 @@ var debug = require('debug')('express-raw:server');
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
@@ -23,20 +21,17 @@ app.disable('x-powered-by');
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port);
 server.on('listening', () => console.log('Server started listening on ' + port));
 
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
     var port = parseInt(val, 10);
 
