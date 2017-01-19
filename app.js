@@ -19,24 +19,28 @@ var livereloadSserver = livereload.createServer();
 livereloadSserver.watch(staticDir);
 
 // my first middleware
-app.use((req, res, next) => {
+app.use(function(req, res, next) {
     console.log('Received request on: ' + req.url);
     next();
 });
 
 // routes
-app.get('/', (req, res) => res.render('home'));
-app.get('/about', (req, res) => res.render('about'));
+app.get('/', function(req, res) {
+    res.render('home');
+});
+app.get('/about', function(req, res) {
+    res.render('about');
+});
 
 // default route - 404
-app.use((req, res) => {
+app.use(function(req, res) {
     res.status(404);
     res.type('text/html');
     res.render('404');
 });
 
 // error catching - 500
-app.use((err, req, res, next) => {
+app.use(function(err, req, res, next) {
     res.status(500);
     res.render('500');
 });
