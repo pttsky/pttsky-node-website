@@ -11,4 +11,26 @@ ol, ul {
 a {
   text-decoration: none; }
 
+/* line 5, ../sass/main.scss */
+body {
+  font-size: 14px;
+  font-family: "PT Sans", Calibri, sans-serif; }
+
+/* line 10, ../sass/main.scss */
+.site-title {
+  font-size: 12em; }
+
+/* line 14, ../sass/main.scss */
+.container__top-right-corner {
+  position: absolute;
+  top: 0;
+  right: 0; }
+
+/* line 20, ../sass/main.scss */
+.nav__item {
+  float: left; }
+  /* line 22, ../sass/main.scss */
+  .nav__item + .nav__item {
+    margin-left: 10px; }
+
 /*# sourceMappingURL=main.css.map */

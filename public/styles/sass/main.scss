@@ -2,3 +2,25 @@
 @import '_mixins';
 @import '_reset';
 
+body {
+  font-size: 14px;
+  font-family: $f-stack-text;
+}
+
+.site-title {
+  font-size: 12em;
+}
+
+.container__top-right-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.nav__item {
+  float: left;
+  & + & {
+    margin-left: 10px;
+  }
+}
+
