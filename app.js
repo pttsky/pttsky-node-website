@@ -1,6 +1,8 @@
 // imports
 var express = require('express');
 var handlebars = require('express-handlebars');
+var path = require('path');
+var livereload = require('livereload');
 
 var app = express();
 
@@ -9,9 +11,14 @@ app.engine('handlebars', handlebars({defaultLayout: 'index'}));
 app.set('view engine', 'handlebars');
 
 // static files
-app.use(express.static(__dirname + '/public'));
+var staticDir = path.join(__dirname, '/public');
+app.use(express.static(staticDir));
 
-// middleware
+// livereload
+var livereloadSserver = livereload.createServer();
+livereloadSserver.watch(staticDir);
+
+// my first middleware
 app.use((req, res, next) => {
     console.log('Received request on: ' + req.url);
     next();

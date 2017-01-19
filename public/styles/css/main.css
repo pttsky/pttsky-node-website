@@ -1,0 +1,14 @@
+/* line 1, ../sass/_reset.scss */
+* {
+  margin: 0;
+  padding: 0; }
+
+/* line 6, ../sass/_reset.scss */
+ol, ul {
+  list-style: none; }
+
+/* line 10, ../sass/_reset.scss */
+a {
+  text-decoration: none; }
+
+/*# sourceMappingURL=main.css.map */
