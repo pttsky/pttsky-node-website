@@ -6,13 +6,12 @@ const period = 10 * Math.PI;
 const density = 1;
 const delta = Math.round(1 / density);
 
-export class Oscring {
-    constructor(data) {
-        let defaults = {};
-        this.config = defaults.extend(data);
+export default class Oscring {
+    constructor({ context, canvas }) {
+        Object.assign(this, { context, canvas });
     }
     render() {
-        let context = this.config.context;
+        let context = this.context;
         context.beginPath();
         context.moveTo(0, zeroLevel);
         for (let x = 0; x < 2 * Math.PI * period; x += delta) {

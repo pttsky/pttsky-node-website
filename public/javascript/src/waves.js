@@ -1,4 +1,4 @@
-import Oscring from "oscring";
+import Oscring from "./oscring";
 
 
 const canvas = document.getElementById('container');
