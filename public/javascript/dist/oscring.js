@@ -80,7 +80,7 @@
 /* 1 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -90,12 +90,36 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	// settings (config)
-	var amplitude = 20;
-	var zeroLevel = 2 * amplitude;
-	var period = 10 * Math.PI;
-	var density = 1;
-	var delta = Math.round(1 / density);
+	var dots = [{
+	    r: 100,
+	    fi: 0
+	}, {
+	    r: 200,
+	    fi: Math.PI / 4
+	}, {
+	    r: 100,
+	    fi: Math.PI / 2
+	}, {
+	    r: 200,
+	    fi: 3 * Math.PI / 4
+	}, {
+	    r: 100,
+	    fi: Math.PI
+	}, {
+	    r: 200,
+	    fi: 5 * Math.PI / 4
+	}, {
+	    r: 100,
+	    fi: 3 * Math.PI / 2
+	}, {
+	    r: 200,
+	    fi: 7 * Math.PI / 4
+	}];
+
+	var center = {
+	    x: .5,
+	    y: .5
+	};
 
 	var Oscring = function () {
 	    function Oscring(_ref) {
@@ -108,16 +132,23 @@
 	    }
 
 	    _createClass(Oscring, [{
-	        key: "render",
+	        key: 'render',
 	        value: function render() {
 	            var context = this.context;
+	            var canvas = this.canvas;
+	            var tx = void 0,
+	                ty = void 0;
 	            context.beginPath();
-	            context.moveTo(0, zeroLevel);
-	            for (var x = 0; x < 2 * Math.PI * period; x += delta) {
-	                context.lineTo(x, zeroLevel + Math.round(amplitude * Math.sin(x / period)));
+	            for (var i = 0; i < dots.length; i++) {
+	                tx = Math.round(center.x * canvas.width + dots[i].r * Math.cos(dots[i].fi));
+	                ty = Math.round(center.y * canvas.height + dots[i].r * Math.sin(dots[i].fi));
+	                context.lineTo(tx, ty);
 	            }
-	            context.stroke();
 	            context.closePath();
+	            context.strokeStyle = 'rgba(255, 170, 190, .5)';
+	            context.lineWidth = 120;
+	            context.lineJoin = 'round';
+	            context.stroke();
 	        }
 	    }]);
 

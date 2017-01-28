@@ -1,10 +1,35 @@
+const dots = [
+    {
+        r: 100,
+        fi: 0
+    }, {
+        r: 200,
+        fi: Math.PI / 4
+    }, {
+        r: 100,
+        fi: Math.PI / 2
+    }, {
+        r: 200,
+        fi: 3 * Math.PI / 4
+    }, {
+        r: 100,
+        fi: Math.PI
+    }, {
+        r: 200,
+        fi: 5 * Math.PI / 4
+    }, {
+        r: 100,
+        fi: 3 * Math.PI / 2
+    },{
+        r: 200,
+        fi: 7 * Math.PI / 4
+    },
+];
 
-// settings (config)
-const amplitude = 20;
-const zeroLevel = 2 * amplitude;
-const period = 10 * Math.PI;
-const density = 1;
-const delta = Math.round(1 / density);
+const center = {
+    x: .5,
+    y: .5
+};
 
 export default class Oscring {
     constructor({ context, canvas }) {
@@ -12,12 +37,18 @@ export default class Oscring {
     }
     render() {
         let context = this.context;
+        let canvas = this.canvas;
+        let tx, ty;
         context.beginPath();
-        context.moveTo(0, zeroLevel);
-        for (let x = 0; x < 2 * Math.PI * period; x += delta) {
-            context.lineTo(x, zeroLevel + Math.round(amplitude * Math.sin(x / period)));
+        for (let i = 0; i < dots.length; i++) {
+            tx = Math.round(center.x * canvas.width + dots[i].r * Math.cos(dots[i].fi));
+            ty = Math.round(center.y * canvas.height + dots[i].r * Math.sin(dots[i].fi));
+            context.lineTo(tx, ty);
         }
-        context.stroke();
         context.closePath();
+        context.strokeStyle = 'rgba(255, 170, 190, .5)';
+        context.lineWidth = 120;
+        context.lineJoin = 'round';
+        context.stroke();
     }
 }
