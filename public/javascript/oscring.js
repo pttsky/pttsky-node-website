@@ -1,0 +1,16 @@
+export class Oscring {
+    constructor(data) {
+        let defaults = {};
+        this.config = defaults.extend(data);
+    }
+    render() {
+        let context = this.config.context;
+        context.beginPath();
+        context.moveTo(0, zeroLevel);
+        for (let x = 0; x < 2 * Math.PI * period; x += delta) {
+            context.lineTo(x, zeroLevel + Math.round(amplitude * Math.sin(x / period)));
+        }
+        context.stroke();
+        context.closePath();
+    }
+}
