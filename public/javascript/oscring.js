@@ -1,3 +1,7 @@
+const amplitude = 20;
+const zeroLevel = 2 * amplitude;
+const period = 10 * Math.PI;
+
 export class Oscring {
     constructor(data) {
         let defaults = {};
