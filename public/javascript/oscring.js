@@ -1,6 +1,10 @@
+
+// settings (config)
 const amplitude = 20;
 const zeroLevel = 2 * amplitude;
 const period = 10 * Math.PI;
+const density = 1;
+const delta = Math.round(1 / density);
 
 export class Oscring {
     constructor(data) {

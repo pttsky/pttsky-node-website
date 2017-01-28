@@ -1,16 +1,9 @@
 import Oscring from "oscring";
 
+
 const canvas = document.getElementById('container');
 const context = canvas.getContext('2d');
 
-
-// settings (config)
-const density = 1;
-const delta = Math.round(1 / density);
-
-
-// variables (runtime-changed)
-// ...
 
 let ring = new Oscring({
     canvas,
