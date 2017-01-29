@@ -1,14 +1,15 @@
 import Oscring from "./oscring";
+import "./three-intersection";
 
 
 const canvas = document.getElementById('container');
 const context = canvas.getContext('2d');
 
 
-let ring = new Oscring({
-    canvas,
-    context
-});
+// let ring = new Oscring({
+//     canvas,
+//     context
+// });
 
 
 //init
@@ -19,7 +20,7 @@ onResize();
 window.addEventListener('resize', onResize, true);
 function onResize() {
     spreadCanvas();
-    ring.render();
+    // ring.render();
 }
 function spreadCanvas() {
     canvas.style.width = window.innerWidth + 'px';
