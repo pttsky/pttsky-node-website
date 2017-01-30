@@ -2,8 +2,8 @@ import {
     WebGLRenderer,
     PerspectiveCamera,
     Scene,
-    Raycaster,
-    Vector2,
+    BackSide,
+    PointLight,
     BoxGeometry,
     MeshStandardMaterial,
     Mesh
@@ -26,23 +26,25 @@ let camera = new PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0
 let scene = new Scene();
 
 // cube
-let geometry = new BoxGeometry(100, 100, 100);
+let geometry = new BoxGeometry(10, 10, 10);
 let material = new MeshStandardMaterial({
-    color: 0xFFFFFF,
-    roughness: .5,
-    metallness: .5
+    color: 0xffffff,
+    roughness: 1,
+    metalness: 0,
+    side: BackSide
 });
 let cube = new Mesh(geometry, material);
-cube.position.set(0,0,-500);
 scene.add(cube);
 
+//light
+let light = new PointLight(0xffffff, 1, 0, 2);
+scene.add(light);
 
 
 requestAnimationFrame(render);
 function render() {
 
-    cube.rotation.x += .003;
-    cube.rotation.z -= .002;
+    cube.rotation.y += .002;
 
     renderer.render(scene, camera);
     requestAnimationFrame(render);

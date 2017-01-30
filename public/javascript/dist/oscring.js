@@ -74,21 +74,24 @@
 	var scene = new _three.Scene();
 
 	// cube
-	var geometry = new _three.BoxGeometry(100, 100, 100);
+	var geometry = new _three.BoxGeometry(10, 10, 10);
 	var material = new _three.MeshStandardMaterial({
-	    color: 0xFFFFFF,
-	    roughness: .5,
-	    metallness: .5
+	    color: 0xffffff,
+	    roughness: 1,
+	    metalness: 0,
+	    side: _three.BackSide
 	});
 	var cube = new _three.Mesh(geometry, material);
-	cube.position.set(0, 0, -500);
 	scene.add(cube);
+
+	//light
+	var light = new _three.PointLight(0xffffff, 1, 0, 2);
+	scene.add(light);
 
 	requestAnimationFrame(render);
 	function render() {
 
-	    cube.rotation.x += .003;
-	    cube.rotation.z -= .002;
+	    cube.rotation.y += .002;
 
 	    renderer.render(scene, camera);
 	    requestAnimationFrame(render);
