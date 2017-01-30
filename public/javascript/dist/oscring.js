@@ -46,225 +46,56 @@
 
 	"use strict";
 
-	var _oscring = __webpack_require__(1);
-
-	var _oscring2 = _interopRequireDefault(_oscring);
-
-	__webpack_require__(2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var canvas = document.getElementById('container');
-	var context = canvas.getContext('2d');
-
-	// let ring = new Oscring({
-	//     canvas,
-	//     context
-	// });
-
-
-	//init
-	onResize();
-
-	// keep canvas size same as window
-	window.addEventListener('resize', onResize, true);
-	function onResize() {
-	    spreadCanvas();
-	    // ring.render();
-	}
-	function spreadCanvas() {
-	    canvas.style.width = window.innerWidth + 'px';
-	    canvas.style.height = window.innerHeight + 'px';
-	    canvas.width = window.innerWidth;
-	    canvas.height = window.innerHeight;
-	}
+	__webpack_require__(1);
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	var _three = __webpack_require__(2);
+
+	// renderer
+	var renderer = new _three.WebGLRenderer({
+	    canvas: document.getElementById('container'),
+	    antialias: true
 	});
+	renderer.setClearColor(0xf5f5f5);
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	window.addEventListener('resize', function () {
+	    return renderer.setSize(window.innerWidth, window.innerHeight);
+	}, true);
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	// camera
+	var camera = new _three.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 3000);
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	// scene
+	var scene = new _three.Scene();
 
-	var dots = [{
-	    r: 100,
-	    fi: 0
-	}, {
-	    r: 200,
-	    fi: Math.PI / 4
-	}, {
-	    r: 100,
-	    fi: Math.PI / 2
-	}, {
-	    r: 200,
-	    fi: 3 * Math.PI / 4
-	}, {
-	    r: 100,
-	    fi: Math.PI
-	}, {
-	    r: 200,
-	    fi: 5 * Math.PI / 4
-	}, {
-	    r: 100,
-	    fi: 3 * Math.PI / 2
-	}, {
-	    r: 200,
-	    fi: 7 * Math.PI / 4
-	}];
+	// cube
+	var geometry = new _three.BoxGeometry(100, 100, 100);
+	var material = new _three.MeshStandardMaterial({
+	    color: 0xFFFFFF,
+	    roughness: .5,
+	    metallness: .5
+	});
+	var cube = new _three.Mesh(geometry, material);
+	cube.position.set(0, 0, -500);
+	scene.add(cube);
 
-	var center = {
-	    x: .5,
-	    y: .5
-	};
+	requestAnimationFrame(render);
+	function render() {
 
-	var Oscring = function () {
-	    function Oscring(_ref) {
-	        var context = _ref.context,
-	            canvas = _ref.canvas;
+	    cube.rotation.x += .003;
+	    cube.rotation.z -= .002;
 
-	        _classCallCheck(this, Oscring);
-
-	        Object.assign(this, { context: context, canvas: canvas });
-	    }
-
-	    _createClass(Oscring, [{
-	        key: 'render',
-	        value: function render() {
-	            var context = this.context;
-	            var canvas = this.canvas;
-	            var tx = void 0,
-	                ty = void 0;
-	            context.beginPath();
-	            for (var i = 0; i < dots.length; i++) {
-	                tx = Math.round(center.x * canvas.width + dots[i].r * Math.cos(dots[i].fi));
-	                ty = Math.round(center.y * canvas.height + dots[i].r * Math.sin(dots[i].fi));
-	                context.lineTo(tx, ty);
-	            }
-	            context.closePath();
-	            context.strokeStyle = 'rgba(255, 170, 190, .5)';
-	            context.lineWidth = 120;
-	            context.lineJoin = 'round';
-	            context.stroke();
-	        }
-	    }]);
-
-	    return Oscring;
-	}();
-
-	exports.default = Oscring;
+	    renderer.render(scene, camera);
+	    requestAnimationFrame(render);
+	}
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _three = __webpack_require__(3);
-
-	function five(x) {
-	    return 5 * Math.round(x / 5);
-	}
-	var transparency = {
-	    0: "00",
-	    5: "0D",
-	    10: "1A",
-	    15: "26",
-	    20: "33",
-	    25: "40",
-	    30: "4D",
-	    35: "59",
-	    40: "66",
-	    45: "73",
-	    50: "80",
-	    55: "8C",
-	    60: "99",
-	    65: "A6",
-	    70: "B3",
-	    75: "BF",
-	    80: "CC",
-	    85: "D9",
-	    90: "E6",
-	    95: "F2",
-	    100: "FF"
-	};
-
-	var scene = new _three.Scene();
-
-	var camera = new _three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-	var renderer = new _three.WebGLRenderer();
-	var raycaster = new _three.Raycaster();
-	var mouse = new _three.Vector2();
-	mouse.x = 0;
-	mouse.y = 0;
-	var speed = 0.1;
-	renderer.setSize(window.innerWidth, window.innerHeight);
-	document.body.appendChild(renderer.domElement);
-
-	var shapes = [];
-	camera.position.x = 4;
-	shapes.push(new _three.BoxGeometry(1, 3, 0.75));
-	camera.position.x = 6;
-	shapes.push(new _three.BoxGeometry(1, 3, 0.75));
-	camera.position.z = 25;
-	var trans = transparency[five(camera.position.z)];
-	var material = new _three.MeshBasicMaterial({ color: '#' + trans + '#F5F5F5' });
-	var cubes = [];
-	for (var i = 0; i < shapes.length; i++) {
-	    var cube = new _three.Mesh(shapes[i], material);
-	    cubes.push(cube);
-	}
-
-	scene.add(cubes[0]);
-	scene.add(cubes[1]);
-
-	camera.position.x = 4;
-	var render = function render() {
-	    requestAnimationFrame(render);
-
-	    camera.position.z -= speed;
-	    trans = transparency[five(camera.position.z)];
-	    var col = '#' + trans + '#F5F5F5';
-	    material = new _three.MeshBasicMaterial({ color: col });
-	    scene = new _three.Scene();
-	    scene.add(new _three.Mesh(shapes[0], material));
-	    if (camera.position.z <= 0) {
-	        camera.position.z = 25;
-	        // shapes.push(new BoxGeometry( 1, 3, 0.75 ));
-	        // cubes.push(new Mesh(shapes[shapes.length-1], material));
-	        // scene.add(cubes[cubes.length-1]);
-	    }
-	    // cube.rotation.x += 0.05;
-	    // cube.rotation.y += 0.05;
-	    //             cube.rotation.z += 0.05;
-
-	    renderer.render(scene, camera);
-	};
-
-	render();
-
-	function onMouseMove(event) {
-
-	    // calculate mouse position in normalized device coordinates
-	    // (-1 to +1) for both components
-
-	    mouse.x = event.clientX / window.innerWidth * 2 - 1;
-	    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-	}
-
-	window.addEventListener('mousemove', onMouseMove, false);
-
-	window.requestAnimationFrame(render);
-
-/***/ },
-/* 3 */
 /***/ function(module, exports) {
 
 	'use strict';Object.defineProperty(exports,"__esModule",{value:true});var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj;};// Polyfills
