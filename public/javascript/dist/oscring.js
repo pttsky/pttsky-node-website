@@ -74,15 +74,33 @@
 	var scene = new _three.Scene();
 
 	// cube
-	var geometry = new _three.BoxGeometry(10, 10, 10);
+	var geometry = new _three.BoxGeometry(100, 100, 100);
 	var material = new _three.MeshStandardMaterial({
-	    color: 0xffffff,
-	    roughness: 1,
-	    metalness: 0,
+	    color: 0x888888,
+	    roughness: 0.5,
+	    metalness: 0.1,
 	    side: _three.BackSide
 	});
 	var cube = new _three.Mesh(geometry, material);
 	scene.add(cube);
+
+	// morph
+	var t = 0;
+	var morphGeometry = new _three.ParametricGeometry(function (u, v) {
+	    var r = u;
+	    var fi = 2 * Math.PI * v + t;
+	    var x = r * (2 + Math.cos(fi));
+	    var y = r * (2 + Math.sin(fi));
+	    // x = u * (1 + Math.sin(2 * Math.PI * v + t));
+	    // y = v * (1 + Math.cos(2 * Math.PI * u));
+	    console.log(x, y);
+	    return new _three.Vector3(x, y, 0);
+	}, 30, 30);
+	//let morphGeometry = new BoxGeometry(5, 5, 5);
+	var morphMaterial = new _three.MeshStandardMaterial({ color: 0xa00030, roughness: .3 });
+	var morph = new _three.Mesh(morphGeometry, morphMaterial);
+	morph.position.set(-1, -1, -6);
+	scene.add(morph);
 
 	//light
 	var light = new _three.PointLight(0xffffff, 1, 0, 2);
@@ -92,6 +110,8 @@
 	function render() {
 
 	    cube.rotation.y += .002;
+	    t += .01;
+	    morphGeometry.verticesNeedUpdate = true;
 
 	    renderer.render(scene, camera);
 	    requestAnimationFrame(render);
