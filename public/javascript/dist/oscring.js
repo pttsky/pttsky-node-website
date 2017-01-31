@@ -77,7 +77,7 @@
 	var geometry = new _three.BoxGeometry(100, 100, 100);
 	var material = new _three.MeshStandardMaterial({
 	    color: 0x888888,
-	    roughness: 0.5,
+	    roughness: 1,
 	    metalness: 0.1,
 	    side: _three.BackSide
 	});

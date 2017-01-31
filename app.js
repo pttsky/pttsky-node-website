@@ -2,7 +2,7 @@
 var express = require('express');
 var handlebars = require('express-handlebars');
 var path = require('path');
-var livereload = require('livereload');
+// var livereload = require('livereload');
 
 var app = express();
 
@@ -15,8 +15,8 @@ var staticDir = path.join(__dirname, '/public');
 app.use(express.static(staticDir));
 
 // livereload
-var livereloadSserver = livereload.createServer();
-livereloadSserver.watch(staticDir);
+// var livereloadSserver = livereload.createServer();
+// livereloadSserver.watch(staticDir);
 
 // my first middleware
 app.use(function(req, res, next) {

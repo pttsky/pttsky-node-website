@@ -31,7 +31,7 @@ let scene = new Scene();
 let geometry = new BoxGeometry(100, 100, 100);
 let material = new MeshStandardMaterial({
     color: 0x888888,
-    roughness: 0.5,
+    roughness: 1,
     metalness: 0.1,
     side: BackSide
 });
