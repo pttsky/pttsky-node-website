@@ -103,10 +103,31 @@ var material = new _three.MeshStandardMaterial({
 var cube = new _three.Mesh(geometry, material);
 scene.add(cube);
 
-// morph
+// morph 1
 var t = 0;
-var morphGeometry = new _three.ParametricGeometry(function (u, v) {
+var morphGeometry1 = new _three.ParametricGeometry(function (u, v) {
     var r = u;
+    var fi = 2 * Math.PI * v + t;
+    var x = r * (0 + Math.cos(fi));
+    var y = r * (0 + Math.sin(fi));
+    // x = u * (1 + Math.sin(2 * Math.PI * v + t));
+    // y = v * (1 + Math.cos(2 * Math.PI * u));
+    console.log(x, y);
+    return new _three.Vector3(x, y, 0);
+}, 30, 30);
+var morphMaterial1 = new _three.MeshStandardMaterial({
+    transparent: true,
+    opacity: .86,
+    color: 0xc00020,
+    roughness: .3
+});
+var morph1 = new _three.Mesh(morphGeometry1, morphMaterial1);
+morph1.position.set(0, 0, -6);
+scene.add(morph1);
+
+// morph 2
+var morphGeometry2 = new _three.ParametricGeometry(function (u, v) {
+    var r = 1.5 * u;
     var fi = 2 * Math.PI * v + t;
     var x = r * (2 + Math.cos(fi));
     var y = r * (2 + Math.sin(fi));
@@ -115,15 +136,35 @@ var morphGeometry = new _three.ParametricGeometry(function (u, v) {
     console.log(x, y);
     return new _three.Vector3(x, y, 0);
 }, 30, 30);
-var morphMaterial = new _three.MeshStandardMaterial({
+var morphMaterial2 = new _three.MeshStandardMaterial({
     transparent: true,
     opacity: .86,
-    color: 0xe00020,
+    color: 0xc00020,
     roughness: .3
 });
-var morph = new _three.Mesh(morphGeometry, morphMaterial);
-morph.position.set(-1, -1, -6);
-scene.add(morph);
+var morph2 = new _three.Mesh(morphGeometry2, morphMaterial2);
+morph2.position.set(-3, -2, -8);
+scene.add(morph2);
+
+// morph 3
+var morphGeometry3 = new _three.ParametricGeometry(function (u, v) {
+    var scale = 1;
+    var oscillations = [{ quote: .4, freq: 1, speed: -2 }, { quote: .075, freq: 5, speed: 1 }];
+    var fi = 2 * Math.PI * v;
+    var r = oscillations.reduce(function (a, b) {
+        return a * (1 + b.quote * Math.cos(fi * b.freq + b.speed * t));
+    }, u * scale);
+    return new _three.Vector3(r * Math.cos(fi), r * Math.sin(fi), 0);
+}, 1, 102);
+var morphMaterial3 = new _three.MeshStandardMaterial({
+    transparent: true,
+    opacity: .86,
+    color: 0xc08030,
+    roughness: .3
+});
+var morph3 = new _three.Mesh(morphGeometry3, morphMaterial3);
+morph3.position.set(0, 0, -5);
+scene.add(morph3);
 
 //light
 var light = new _three.PointLight(0xffffff, 1, 0, 2);
@@ -134,7 +175,12 @@ function render() {
 
     cube.rotation.y += .002;
     t += .01;
-    morphGeometry.verticesNeedUpdate = true;
+    morphGeometry3.verticesNeedUpdate = true;
+    morphGeometry3.uvsNeedUpdate = true;
+    morphGeometry3.elementsNeedUpdate = true;
+    morphGeometry3.groupsNeedUpdate = true;
+    morphGeometry3.normalsNeedUpdate = true;
+    morphGeometry3.lineDistancesNeedUpdate = true;
 
     renderer.render(scene, camera);
     requestAnimationFrame(render);
