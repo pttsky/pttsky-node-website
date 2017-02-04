@@ -1,22 +1,39 @@
 // imports
-var express = require('express');
-var handlebars = require('express-handlebars');
-var path = require('path');
-// var livereload = require('livereload');
+const express = require('express');
+const handlebars = require('express-handlebars');
+const path = require('path');
+const watch = require('node-watch');
 
-var app = express();
+// dev
+const livereload = require('livereload');
+const app = express();
 
 // template engine
 app.engine('handlebars', handlebars({defaultLayout: 'index'}));
 app.set('view engine', 'handlebars');
 
 // static files
-var staticDir = path.join(__dirname, '/public');
+const staticDir = path.join(__dirname, '/public');
 app.use(express.static(staticDir));
 
-// livereload
-// var livereloadSserver = livereload.createServer();
-// livereloadSserver.watch(staticDir);
+// dev
+const livereloadSserver = livereload.createServer();
+livereloadSserver.watch(staticDir);
+const webpack = require('webpack'); //to access webpack runtime
+const configuration = require('./webpack.config.js');
+
+let compiler = webpack(configuration);
+
+watch(path.join(__dirname, 'public/javascript/src'), () => {
+    compiler.apply(new webpack.ProgressPlugin());
+    compiler.run(function(err, stats) {
+        // ...
+    });
+});
+
+// app.use(webpackDevMiddleware(compiler, {
+//      publicPath: '/'
+//}));
 
 // my first middleware
 app.use(function(req, res, next) {

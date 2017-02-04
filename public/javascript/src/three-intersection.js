@@ -30,9 +30,9 @@ let scene = new Scene();
 // cube
 let geometry = new BoxGeometry(100, 100, 100);
 let material = new MeshStandardMaterial({
-    color: 0x888888,
-    roughness: 1,
-    metalness: 0.1,
+    color: 0xffffff,
+    roughness: 0.6,
+    metalness: 0.5,
     side: BackSide
 });
 let cube = new Mesh(geometry, material);
@@ -50,8 +50,12 @@ let morphGeometry = new ParametricGeometry((u, v) => {
     console.log(x, y);
     return new Vector3(x, y, 0);
 }, 30, 30);
-//let morphGeometry = new BoxGeometry(5, 5, 5);
-let morphMaterial = new MeshStandardMaterial({color: 0xa00030, roughness: .3});
+let morphMaterial = new MeshStandardMaterial({
+    transparent: true,
+    opacity:.86,
+    color: 0xe00020,
+    roughness: .3
+});
 let morph = new Mesh(morphGeometry, morphMaterial);
 morph.position.set(-1, -1, -6);
 scene.add(morph);

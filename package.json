@@ -17,6 +17,8 @@
     "grunt": "^1.0.1",
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
-    "livereload": "^0.6.0"
+    "livereload": "^0.6.0",
+    "node-watch": "^0.4.1",
+    "webpack": "^2.2.1"
   }
 }
