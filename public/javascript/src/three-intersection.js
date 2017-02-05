@@ -11,6 +11,10 @@ import {
     Mesh
 } from '../lib/three.module';
 
+
+// setup
+
+
 // renderer
 let renderer = new WebGLRenderer({
     canvas: document.getElementById('container'),
@@ -18,14 +22,25 @@ let renderer = new WebGLRenderer({
 });
 renderer.setClearColor(0xf5f5f5);
 renderer.setSize(window.innerWidth, window.innerHeight);
-window.addEventListener('resize', () => renderer.setSize(window.innerWidth, window.innerHeight), true);
-
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight)
+}, true);
 
 // camera
 let camera = new PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 3000);
 
 // scene
 let scene = new Scene();
+
+
+// surroundings
+
+
+// light
+let light = new PointLight(0xffffff, 1, 0, 2);
+scene.add(light);
 
 // cube
 let geometry = new BoxGeometry(100, 100, 100);
@@ -38,87 +53,108 @@ let material = new MeshStandardMaterial({
 let cube = new Mesh(geometry, material);
 scene.add(cube);
 
-// morph 1
-let t = 0;
-let morphGeometry1 = new ParametricGeometry((u, v) => {
-    let r = u;
-    let fi = 2 * Math.PI * v + t;
-    let x = r *(0 + Math.cos(fi));
-    let y = r * (0 + Math.sin(fi));
-    // x = u * (1 + Math.sin(2 * Math.PI * v + t));
-    // y = v * (1 + Math.cos(2 * Math.PI * u));
-    console.log(x, y);
-    return new Vector3(x, y, 0);
-}, 30, 30);
-let morphMaterial1 = new MeshStandardMaterial({
+
+// figures
+
+
+// circle
+const circleGeometry = new ParametricGeometry((u, v) => {
+    const r = u;
+    const fi = 2 * Math.PI * v;
+    return new Vector3(r * Math.cos(fi), r * Math.sin(fi), 0);
+}, 1, 100);
+const circleMaterial = new MeshStandardMaterial({
     transparent: true,
-    opacity:.86,
+    opacity: .86,
     color: 0xc00020,
     roughness: .3
 });
-let morph1 = new Mesh(morphGeometry1, morphMaterial1);
-morph1.position.set(0, 0, -6);
-scene.add(morph1);
+let circle = new Mesh(circleGeometry, circleMaterial);
+circle.position.set(0, 0, -6);
+scene.add(circle);
 
-// morph 2
-let morphGeometry2 = new ParametricGeometry((u, v) => {
-    let r = 1.5 * u;
-    let fi = 2 * Math.PI * v + t;
-    let x = r *(2 + Math.cos(fi));
-    let y = r * (2 + Math.sin(fi));
-    // x = u * (1 + Math.sin(2 * Math.PI * v + t));
-    // y = v * (1 + Math.cos(2 * Math.PI * u));
-    console.log(x, y);
+// marker
+const markerGeometry = new ParametricGeometry((u, v) => {
+    const r = 1.5 * u;
+    const fi = 2 * Math.PI * v;
+    const x = r * (2 + Math.cos(fi));
+    const y = r * (2 + Math.sin(fi));
     return new Vector3(x, y, 0);
-}, 30, 30);
-let morphMaterial2 = new MeshStandardMaterial({
+}, 1, 100);
+const markerMaterial = new MeshStandardMaterial({
     transparent: true,
-    opacity:.86,
+    opacity: .86,
     color: 0xc00020,
     roughness: .3
 });
-let morph2 = new Mesh(morphGeometry2, morphMaterial2);
-morph2.position.set(-3, -2, -8);
-scene.add(morph2);
+let marker = new Mesh(markerGeometry, markerMaterial);
+marker.position.set(-3, -2, -8);
+scene.add(marker);
 
-// morph 3
-let morphGeometry3 = new ParametricGeometry((u, v) => {
+// oscillating jelly circle
+
+let dt = 0;
+function getJellyVertices() {
+    const VERTICES_NUMBER = 100;
+
+    // TODO: rewrite in a functional way with lodash or similar
+    const parameterValues = [];
+    for (let i = 0; i < VERTICES_NUMBER; i++) {
+        parameterValues.push(i / VERTICES_NUMBER);
+    }
+
     const scale = 1;
     const oscillations = [
-        {quote: .4, freq: 1,speed: -2},
+        {quote: .4, freq: 1, speed: -2},
+        {quote: .075, freq: 5, speed: 1}
+    ];
+    return parameterValues.map((t) => {
+        const fi = 2 * Math.PI * t;
+        const r = oscillations.reduce((a, b) =>
+            a * ( 1 + b.quote * Math.cos( b.freq * fi + b.speed * dt )),
+            scale);
+        return new Vector3(r * Math.cos(fi), r * Math.sin(fi), 0);
+    })
+}
+const vertices = getJellyVertices();
+console.log(vertices);
+const jellyCircleGeometry = new ParametricGeometry((u, v) => {
+    const scale = 1;
+    const oscillations = [
+        {quote: .4, freq: 1, speed: -2},
         {quote: .075, freq: 5, speed: 1}
     ];
     const fi = 2 * Math.PI * v;
-    const r = oscillations.reduce((a, b) => a * (1 + b.quote * Math.cos(fi * b.freq + b.speed * t)), u * scale);
+    const r = oscillations.reduce((a, b) => a * (1 + b.quote * Math.cos(fi * b.freq + b.speed * dt)), u * scale);
     return new Vector3(r * Math.cos(fi), r * Math.sin(fi), 0);
-}, 1, 102);
-let morphMaterial3 = new MeshStandardMaterial({
+}, 1, 99);
+
+jellyCircleGeometry.vertices = getJellyVertices();
+console.log(jellyCircleGeometry.vertices);
+jellyCircleGeometry.verticesNeedUpdate = true;
+
+const jellyCircleMaterial = new MeshStandardMaterial({
     transparent: true,
-    opacity:.86,
+    opacity: .86,
     color: 0xc08030,
     roughness: .3
 });
-let morph3 = new Mesh(morphGeometry3, morphMaterial3);
-morph3.position.set(0, 0, -5);
-scene.add(morph3);
+let jellyCircle = new Mesh(jellyCircleGeometry, jellyCircleMaterial);
+jellyCircle.position.set(0, 0, -5);
+scene.add(jellyCircle);
 
-//light
-let light = new PointLight(0xffffff, 1, 0, 2);
-scene.add(light);
-
-
-requestAnimationFrame(render);
+requestAnimationFrame( render );
 function render() {
-
     cube.rotation.y += .002;
-    t += .01;
-    morphGeometry3.verticesNeedUpdate = true;
-    morphGeometry3.uvsNeedUpdate = true;
-    morphGeometry3.elementsNeedUpdate = true;
-    morphGeometry3.groupsNeedUpdate = true;
-    morphGeometry3.normalsNeedUpdate = true;
-    morphGeometry3.lineDistancesNeedUpdate = true;
-
-    renderer.render(scene, camera);
-    requestAnimationFrame(render);
+    dt += .01;
+    jellyCircleGeometry.vertices = getJellyVertices();
+    jellyCircleGeometry.verticesNeedUpdate = true;
+    jellyCircleGeometry.elementsNeedUpdate = true;
+    jellyCircleGeometry.morphTargetsNeedUpdate = true;
+    jellyCircleGeometry.uvsNeedUpdate = true;
+    jellyCircleGeometry.normalsNeedUpdate = true;
+    jellyCircleGeometry.colorsNeedUpdate = true;
+    jellyCircleGeometry.tangentsNeedUpdate = true;
+    renderer.render( scene, camera );
+    requestAnimationFrame( render );
 }

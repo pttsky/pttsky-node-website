@@ -75,6 +75,9 @@
 
 var _three = __webpack_require__(1);
 
+// setup
+
+
 // renderer
 var renderer = new _three.WebGLRenderer({
     canvas: document.getElementById('container'),
@@ -83,7 +86,9 @@ var renderer = new _three.WebGLRenderer({
 renderer.setClearColor(0xf5f5f5);
 renderer.setSize(window.innerWidth, window.innerHeight);
 window.addEventListener('resize', function () {
-    return renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }, true);
 
 // camera
@@ -91,6 +96,13 @@ var camera = new _three.PerspectiveCamera(35, window.innerWidth / window.innerHe
 
 // scene
 var scene = new _three.Scene();
+
+// surroundings
+
+
+// light
+var light = new _three.PointLight(0xffffff, 1, 0, 2);
+scene.add(light);
 
 // cube
 var geometry = new _three.BoxGeometry(100, 100, 100);
@@ -103,85 +115,103 @@ var material = new _three.MeshStandardMaterial({
 var cube = new _three.Mesh(geometry, material);
 scene.add(cube);
 
-// morph 1
-var t = 0;
-var morphGeometry1 = new _three.ParametricGeometry(function (u, v) {
+// figures
+
+
+// circle
+var circleGeometry = new _three.ParametricGeometry(function (u, v) {
     var r = u;
-    var fi = 2 * Math.PI * v + t;
-    var x = r * (0 + Math.cos(fi));
-    var y = r * (0 + Math.sin(fi));
-    // x = u * (1 + Math.sin(2 * Math.PI * v + t));
-    // y = v * (1 + Math.cos(2 * Math.PI * u));
-    console.log(x, y);
-    return new _three.Vector3(x, y, 0);
-}, 30, 30);
-var morphMaterial1 = new _three.MeshStandardMaterial({
+    var fi = 2 * Math.PI * v;
+    return new _three.Vector3(r * Math.cos(fi), r * Math.sin(fi), 0);
+}, 1, 100);
+var circleMaterial = new _three.MeshStandardMaterial({
     transparent: true,
     opacity: .86,
     color: 0xc00020,
     roughness: .3
 });
-var morph1 = new _three.Mesh(morphGeometry1, morphMaterial1);
-morph1.position.set(0, 0, -6);
-scene.add(morph1);
+var circle = new _three.Mesh(circleGeometry, circleMaterial);
+circle.position.set(0, 0, -6);
+scene.add(circle);
 
-// morph 2
-var morphGeometry2 = new _three.ParametricGeometry(function (u, v) {
+// marker
+var markerGeometry = new _three.ParametricGeometry(function (u, v) {
     var r = 1.5 * u;
-    var fi = 2 * Math.PI * v + t;
+    var fi = 2 * Math.PI * v;
     var x = r * (2 + Math.cos(fi));
     var y = r * (2 + Math.sin(fi));
-    // x = u * (1 + Math.sin(2 * Math.PI * v + t));
-    // y = v * (1 + Math.cos(2 * Math.PI * u));
-    console.log(x, y);
     return new _three.Vector3(x, y, 0);
-}, 30, 30);
-var morphMaterial2 = new _three.MeshStandardMaterial({
+}, 1, 100);
+var markerMaterial = new _three.MeshStandardMaterial({
     transparent: true,
     opacity: .86,
     color: 0xc00020,
     roughness: .3
 });
-var morph2 = new _three.Mesh(morphGeometry2, morphMaterial2);
-morph2.position.set(-3, -2, -8);
-scene.add(morph2);
+var marker = new _three.Mesh(markerGeometry, markerMaterial);
+marker.position.set(-3, -2, -8);
+scene.add(marker);
 
-// morph 3
-var morphGeometry3 = new _three.ParametricGeometry(function (u, v) {
+// oscillating jelly circle
+
+var dt = 0;
+function getJellyVertices() {
+    var VERTICES_NUMBER = 100;
+
+    // TODO: rewrite in a functional way with lodash or similar
+    var parameterValues = [];
+    for (var i = 0; i < VERTICES_NUMBER; i++) {
+        parameterValues.push(i / VERTICES_NUMBER);
+    }
+
+    var scale = 1;
+    var oscillations = [{ quote: .4, freq: 1, speed: -2 }, { quote: .075, freq: 5, speed: 1 }];
+    return parameterValues.map(function (t) {
+        var fi = 2 * Math.PI * t;
+        var r = oscillations.reduce(function (a, b) {
+            return a * (1 + b.quote * Math.cos(b.freq * fi + b.speed * dt));
+        }, scale);
+        return new _three.Vector3(r * Math.cos(fi), r * Math.sin(fi), 0);
+    });
+}
+var vertices = getJellyVertices();
+console.log(vertices);
+var jellyCircleGeometry = new _three.ParametricGeometry(function (u, v) {
     var scale = 1;
     var oscillations = [{ quote: .4, freq: 1, speed: -2 }, { quote: .075, freq: 5, speed: 1 }];
     var fi = 2 * Math.PI * v;
     var r = oscillations.reduce(function (a, b) {
-        return a * (1 + b.quote * Math.cos(fi * b.freq + b.speed * t));
+        return a * (1 + b.quote * Math.cos(fi * b.freq + b.speed * dt));
     }, u * scale);
     return new _three.Vector3(r * Math.cos(fi), r * Math.sin(fi), 0);
-}, 1, 102);
-var morphMaterial3 = new _three.MeshStandardMaterial({
+}, 1, 99);
+
+jellyCircleGeometry.vertices = getJellyVertices();
+console.log(jellyCircleGeometry.vertices);
+jellyCircleGeometry.verticesNeedUpdate = true;
+
+var jellyCircleMaterial = new _three.MeshStandardMaterial({
     transparent: true,
     opacity: .86,
     color: 0xc08030,
     roughness: .3
 });
-var morph3 = new _three.Mesh(morphGeometry3, morphMaterial3);
-morph3.position.set(0, 0, -5);
-scene.add(morph3);
-
-//light
-var light = new _three.PointLight(0xffffff, 1, 0, 2);
-scene.add(light);
+var jellyCircle = new _three.Mesh(jellyCircleGeometry, jellyCircleMaterial);
+jellyCircle.position.set(0, 0, -5);
+scene.add(jellyCircle);
 
 requestAnimationFrame(render);
 function render() {
-
     cube.rotation.y += .002;
-    t += .01;
-    morphGeometry3.verticesNeedUpdate = true;
-    morphGeometry3.uvsNeedUpdate = true;
-    morphGeometry3.elementsNeedUpdate = true;
-    morphGeometry3.groupsNeedUpdate = true;
-    morphGeometry3.normalsNeedUpdate = true;
-    morphGeometry3.lineDistancesNeedUpdate = true;
-
+    dt += .01;
+    jellyCircleGeometry.vertices = getJellyVertices();
+    jellyCircleGeometry.verticesNeedUpdate = true;
+    jellyCircleGeometry.elementsNeedUpdate = true;
+    jellyCircleGeometry.morphTargetsNeedUpdate = true;
+    jellyCircleGeometry.uvsNeedUpdate = true;
+    jellyCircleGeometry.normalsNeedUpdate = true;
+    jellyCircleGeometry.colorsNeedUpdate = true;
+    jellyCircleGeometry.tangentsNeedUpdate = true;
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 }
