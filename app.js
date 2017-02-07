@@ -2,11 +2,11 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
 const path = require('path');
+const app = express();
 
 // dev imports
 // const watch = require('node-watch');
 // const livereload = require('livereload');
-// const app = express();
 
 // template engine
 app.engine('handlebars', handlebars({defaultLayout: 'index'}));
