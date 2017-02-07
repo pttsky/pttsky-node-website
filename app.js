@@ -2,11 +2,11 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
 const path = require('path');
-const watch = require('node-watch');
 
-// dev
-const livereload = require('livereload');
-const app = express();
+// dev imports
+// const watch = require('node-watch');
+// const livereload = require('livereload');
+// const app = express();
 
 // template engine
 app.engine('handlebars', handlebars({defaultLayout: 'index'}));
@@ -17,19 +17,17 @@ const staticDir = path.join(__dirname, '/public');
 app.use(express.static(staticDir));
 
 // dev
-const livereloadSserver = livereload.createServer();
-livereloadSserver.watch(staticDir);
-const webpack = require('webpack'); //to access webpack runtime
-const configuration = require('./webpack.config.js');
-
-let compiler = webpack(configuration);
-
-watch(path.join(__dirname, 'public/javascript/src'), () => {
-    compiler.apply(new webpack.ProgressPlugin());
-    compiler.run(function(err, stats) {
-        // ...
-    });
-});
+// const livereloadSserver = livereload.createServer();
+// livereloadSserver.watch(staticDir);
+// const webpack = require('webpack'); //to access webpack runtime
+// const configuration = require('./webpack.config.js');
+// let compiler = webpack(configuration);
+// watch(path.join(__dirname, 'public/javascript/src'), () => {
+//    compiler.apply(new webpack.ProgressPlugin());
+//    compiler.run(function(err, stats) {
+//        // ...
+//    });
+//});
 
 // app.use(webpackDevMiddleware(compiler, {
 //      publicPath: '/'
