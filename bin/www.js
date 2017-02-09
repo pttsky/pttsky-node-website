@@ -1,39 +1,20 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
-var http = require('http');
-var app = require('../app');
-var debug = require('debug')('express-raw:server');
+const http = require('http');
+const app = require('../app');
+const port = normalizePort(process.env.PORT || '3000');
 
-/**
- * Get port from environment and store in Express.
- */
-var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-
-/**
- * Security measures
- */
 app.disable('x-powered-by');
 
-/**
- * Create HTTP server.
- */
-var server = http.createServer(app);
+const server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
 server.listen(port);
 server.on('listening', function() {
     console.log('Server started listening on ' + port)
 });
 
-/**
- * Normalize a port into a number, string, or false.
- */
+// Normalize a port into a number, string, or false
 function normalizePort(val) {
     var port = parseInt(val, 10);
 

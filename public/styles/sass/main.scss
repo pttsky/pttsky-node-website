@@ -4,12 +4,14 @@
 @import 'reset';
 @import 'font-awesome/font-awesome';
 
-
+$footer-offset: 110px;
 .container {
   position: relative;
   padding-top: 20px;
+  padding-bottom: $footer-offset;
   width: 60%;
   margin: 0 auto;
+  margin-bottom: -$footer-offset;
   min-width: $size-min;
   min-height: 100%;
   @include block-margin-top;
@@ -50,7 +52,7 @@
 
 .canvas {
   &_background {
-    position: absolute;
+    position: fixed;
     z-index: -1;
     top: 0;
     left: 0;

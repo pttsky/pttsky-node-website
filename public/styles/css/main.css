@@ -2874,8 +2874,10 @@ p + p {
 .container {
   position: relative;
   padding-top: 20px;
+  padding-bottom: 110px;
   width: 60%;
   margin: 0 auto;
+  margin-bottom: -110px;
   min-width: 320px;
   min-height: 100%; }
   /* line 9, ../sass/_mixins.scss */
@@ -2883,57 +2885,57 @@ p + p {
     content: '';
     display: block;
     width: 100%; }
-  /* line 17, ../sass/main.scss */
+  /* line 19, ../sass/main.scss */
   .container__top-right {
     float: right; }
-  /* line 20, ../sass/main.scss */
+  /* line 22, ../sass/main.scss */
   .container__bottom {
     position: absolute;
     bottom: 20px;
     left: 0;
     width: 100%; }
-  /* line 26, ../sass/main.scss */
+  /* line 28, ../sass/main.scss */
   .container__bottom-center {
     margin: 0 auto;
     text-align: center; }
-  /* line 30, ../sass/main.scss */
+  /* line 32, ../sass/main.scss */
   .container__title {
     float: left;
     margin-top: 10%; }
-  /* line 34, ../sass/main.scss */
+  /* line 36, ../sass/main.scss */
   .container__content {
     clear: both; }
 
-/* line 41, ../sass/main.scss */
+/* line 43, ../sass/main.scss */
 .nav__item {
   float: left;
   font-family: Teko, Impact, sans-serif;
   font-size: 1.5em; }
-  /* line 45, ../sass/main.scss */
+  /* line 47, ../sass/main.scss */
   .nav__item + .nav__item {
     margin-left: 1em; }
 
-/* line 52, ../sass/main.scss */
+/* line 54, ../sass/main.scss */
 .canvas_background {
-  position: absolute;
+  position: fixed;
   z-index: -1;
   top: 0;
   left: 0; }
 
-/* line 61, ../sass/main.scss */
+/* line 63, ../sass/main.scss */
 .page-title {
   font-size: 5em;
   font-weight: 900;
   font-family: Kanit, Calibri, sans-serif; }
-  /* line 66, ../sass/main.scss */
+  /* line 68, ../sass/main.scss */
   .page-title_sitewide {
     font-size: 12em; }
 
-/* line 71, ../sass/main.scss */
+/* line 73, ../sass/main.scss */
 .page-content {
   font-size: 1.5em; }
 
-/* line 75, ../sass/main.scss */
+/* line 77, ../sass/main.scss */
 .social-icons {
   display: inline-block; }
   /* line 2, ../sass/_mixins.scss */
@@ -2941,17 +2943,17 @@ p + p {
     content: '';
     display: block;
     clear: both; }
-  /* line 78, ../sass/main.scss */
+  /* line 80, ../sass/main.scss */
   .social-icons__item {
     float: left; }
-    /* line 80, ../sass/main.scss */
+    /* line 82, ../sass/main.scss */
     .social-icons__item + .social-icons__item {
       margin-left: 1em; }
-  /* line 84, ../sass/main.scss */
+  /* line 86, ../sass/main.scss */
   .social-icons__link {
     font-size: 3em; }
 
-/* line 89, ../sass/main.scss */
+/* line 91, ../sass/main.scss */
 .heading {
   font-family: Teko, Impact, sans-serif; }
 
@@ -2965,16 +2967,20 @@ p + p {
 
   /* line 9, ../sass/_media.scss */
   .page-content {
-    font-size: 1em; }
+    font-size: 1.1em; }
 
   /* line 13, ../sass/_media.scss */
   .nav__item {
-    font-size: 1em; } }
+    font-size: 1.1em; }
+
+  /* line 18, ../sass/_media.scss */
+  .social-icons__link {
+    font-size: 1.5em; } }
 @media (max-width: 768px) {
-  /* line 19, ../sass/_media.scss */
+  /* line 24, ../sass/_media.scss */
   .page-title {
     font-size: 1.5em; }
-    /* line 21, ../sass/_media.scss */
+    /* line 26, ../sass/_media.scss */
     .page-title_sitewide {
       font-size: 5em; } }
 

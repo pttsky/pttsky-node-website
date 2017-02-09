@@ -1,33 +1,34 @@
-// imports
 const express = require('express');
 const handlebars = require('express-handlebars');
 const path = require('path');
 const app = express();
 
-// dev imports
-const watch = require('node-watch');
-const livereload = require('livereload');
 
-// template engine
 app.engine('handlebars', handlebars({defaultLayout: 'index'}));
 app.set('view engine', 'handlebars');
 
-// static files
+
 const staticDir = path.join(__dirname, '/public');
 app.use(express.static(staticDir));
 
-// dev
-const livereloadServer = livereload.createServer();
-livereloadServer.watch(staticDir);
-const webpack = require('webpack'); //to access webpack runtime
-const configuration = require('./webpack.config.js');
-let compiler = webpack(configuration);
-watch(path.join(__dirname, 'public/javascript/src'), () => {
-    compiler.apply(new webpack.ProgressPlugin());
-    compiler.run(function (err, stats) {
 
+if (process.env.NODE_ENV === 'development') {
+    console.log('development environment: loading livereload, webpack, watch');
+    const watch = require('node-watch');
+    const livereload = require('livereload');
+    const livereloadServer = livereload.createServer();
+    livereloadServer.watch(staticDir);
+    const webpack = require('webpack'); //to access webpack runtime
+    const configuration = require('./webpack.config.js');
+    let compiler = webpack(configuration);
+    watch(path.join(__dirname, 'public/javascript/src'), () => {
+        compiler.apply(new webpack.ProgressPlugin());
+        compiler.run(function (err, stats) {
+
+        });
     });
-});
+}
+
 
 // my first middleware
 app.use(function(req, res, next) {
