@@ -1,18 +1,31 @@
 <!doctype html>
 <html lang="en">
 <head>
+
     {{> head }}
+
     <title>Pttsky | Serhii Pitetsky as developer, musician and other things doer on his own site</title>
 </head>
 <body>
+
+<canvas id="magic-canvas" class="canvas canvas_background"></canvas>
+
 <div class="container">
-    <div class="container__top-right-corner">
+    <div class="container__top-right">
 
         {{> nav}}
 
     </div>
 
     {{{body}}}
+
+    <div class="container__bottom">
+        <div class="container__bottom-center">
+
+            {{> social}}
+
+        </div>
+    </div>
 
 </div>
 

@@ -1,0 +1,14 @@
+@mixin clear-after {
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+@mixin block-margin-top {
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+  }
+}

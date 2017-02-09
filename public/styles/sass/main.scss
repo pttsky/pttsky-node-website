@@ -1,31 +1,93 @@
-@import '_var';
-@import '_mixins';
-@import '_reset';
+@import url('https://fonts.googleapis.com/css?family=Kanit:400,900|Teko:700');
+@import 'var';
+@import 'mixins';
+@import 'reset';
+@import 'font-awesome/font-awesome';
 
-body {
-  font-size: 14px;
-  font-family: $f-stack-text;
-}
 
-.site-title {
-  font-size: 12em;
-}
+.container {
+  position: relative;
+  padding-top: 20px;
+  width: 60%;
+  margin: 0 auto;
+  min-width: $size-min;
+  min-height: 100%;
+  @include block-margin-top;
 
-.container__top-right-corner {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.nav__item {
-  float: left;
-  & + & {
-    margin-left: 10px;
+  &__top-right {
+    float: right;
+  }
+  &__bottom {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+  }
+  &__bottom-center {
+    margin: 0 auto;
+    text-align: center;
+  }
+  &__title {
+    float: left;
+    margin-top: 10%;
+  }
+  &__content {
+    clear: both;
   }
 }
 
-.background {
-  position: absolute;
-  z-index: -1;
+
+.nav {
+  &__item {
+    float: left;
+    font-family: $f-stack-headings;
+    font-size: $f-size-h5;
+    & + & {
+      margin-left: 1em;
+    }
+  }
 }
 
+.canvas {
+  &_background {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+  }
+}
+
+
+.page-title {
+  font-size: $f-size-h3;
+  font-weight: 900;
+  font-family: $f-stack-text;
+
+  &_sitewide {
+    font-size: $f-size-h1;
+  }
+}
+
+.page-content {
+  font-size: $f-size-h5;
+}
+
+.social-icons {
+  display: inline-block;
+  @include clear-after;
+  &__item {
+    float: left;
+    & + & {
+      margin-left: 1em;
+    }
+  }
+  &__link {
+    font-size:$f-size-h4;
+  }
+}
+
+.heading {
+  font-family: $f-stack-headings;
+}
+
+@import 'media';

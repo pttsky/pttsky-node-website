@@ -1,6 +1,18 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-size: $f-size-common;
+  font-family: $f-stack-text;
+  color: $c-text;
+  min-width: $size-min;
 }
 
 ol, ul {
@@ -8,5 +20,16 @@ ol, ul {
 }
 
 a {
+  display: inline-block;
   text-decoration: none;
+  color: $c-text;
+  padding-bottom: .1em;
+  border-bottom: 3px solid transparent;
+  &:hover {
+    border-color: $c-text;
+  }
+}
+
+p + p {
+  margin-top: 1em;
 }

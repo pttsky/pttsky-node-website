@@ -17,7 +17,7 @@ import {
 
 // renderer
 let renderer = new WebGLRenderer({
-    canvas: document.getElementById('container'),
+    canvas: document.getElementById('magic-canvas'),
     antialias: true
 });
 renderer.setClearColor(0xf5f5f5);

@@ -1,0 +1,25 @@
+
+@media (max-width: $size-md) {
+  .page-title {
+    font-size: $f-size-h4;
+    &_sitewide {
+      font-size: $f-size-h2;
+    }
+  }
+  .page-content {
+    font-size: $f-size-h6;
+  }
+  .nav {
+    &__item {
+      font-size: $f-size-h6;
+    }
+  }
+}
+@media (max-width: $size-sm) {
+  .page-title {
+    font-size: $f-size-h5;
+    &_sitewide {
+      font-size: $f-size-h3;
+    }
+  }
+}

@@ -80,7 +80,7 @@ var _three = __webpack_require__(1);
 
 // renderer
 var renderer = new _three.WebGLRenderer({
-    canvas: document.getElementById('container'),
+    canvas: document.getElementById('magic-canvas'),
     antialias: true
 });
 renderer.setClearColor(0xf5f5f5);
